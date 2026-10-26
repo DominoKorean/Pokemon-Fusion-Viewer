@@ -1,8 +1,13 @@
 import {readFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
-import {deriveSpriteInventory} from '../src/dex-data.mjs';
+import {deriveSpriteInventory,deriveArtistInventory} from '../src/dex-data.mjs';
 const d=JSON.parse(await readFile(new URL('../public/data/catalog.json',import.meta.url),'utf8'));
 const index=JSON.parse(await readFile(new URL('../public/data/search-index.json',import.meta.url),'utf8'));
+const artists=JSON.parse(await readFile(new URL('../public/data/artists.json',import.meta.url),'utf8'));
+assert.deepEqual(artists,deriveArtistInventory(index),'Scoped artist counts');
+const tripleData=JSON.parse(await readFile(new URL('../public/data/triples.json',import.meta.url),'utf8'));
+assert.equal(tripleData.metadata.count,tripleData.triples.length);
+for(const triple of tripleData.triples){assert.equal(triple.components.join('.'),triple.id);assert.ok(triple.components.every(id=>d.pokemon.some(p=>p.id===id)));assert.equal(triple.stats.length,6);assert.ok(triple.stats.every(v=>Number.isInteger(v)&&v>0&&v<=255));assert.ok(triple.types.every(type=>d.types.some(t=>t.key===type)));assert.equal(triple.spritePath,`Graphics/Battlers/special/${triple.id}.png`);}
 const unlisted=new Set(index.rows.filter(r=>r[6]===false).map(([h,b,a])=>`${h}.${b}${a}`));
 assert.equal(unlisted.size,d.metadata.unlistedVariantCount);
 for(const [key,value] of Object.entries(deriveSpriteInventory(index)))assert.deepEqual(d.metadata[key],value,`Inventory classification: ${key}`);
@@ -18,4 +23,4 @@ assert.ok(d.metadata.mainTags.every(t=>t.count<=d.metadata.mainVariantCount));
 assert.ok(d.metadata.otherTags.every(t=>t.count<=d.metadata.otherVariantCount));
 assert.equal(d.natures.length,25);
 assert.ok(d.metadata.sources.every(s=>s.url.startsWith('https://')&&s.sha256.length===64));
-console.log(`Verified ${ids.size} species, ${count} sprites, 25 natures, localized names and source hashes.`);
+console.log(`Verified ${ids.size} species, ${count} sprites, ${tripleData.triples.length} triples, ${artists.length} artist options, 25 natures, localized names and source hashes.`);

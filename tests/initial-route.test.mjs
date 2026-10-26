@@ -28,3 +28,16 @@ test('remembered fusion stores a portable route and ignores unrelated settings',
   rememberFusion({setItem(key,value){saved={key,value:JSON.parse(value)};}},{head:4,body:7,alt:'e',variantExplicit:true,level:99});
   assert.deepEqual(saved,{key:'fusion-last-viewed',value:{head:4,body:7,alt:'e',variantExplicit:true}});
 });
+test('a last-viewed triple restores on bare entry while a shared pair overrides it',()=>{
+  let saved;
+  rememberFusion({setItem(key,value){saved=JSON.parse(value);}},{head:4,body:7,page:'triple',triple:'1.4.7'});
+  assert.equal(saved.triple,'1.4.7');
+  const settings={saved,tripleIds:new Set(['1.4.7']),random:()=>0};
+  const restored=initialRoute('https://viewer.test/',ids,settings);
+  assert.equal(restored.page,'triple');assert.equal(restored.triple,'1.4.7');
+  assert.equal(initialRoute('https://viewer.test/?head=1&body=7#lab',ids,settings).page,'lab');
+});
+test('opening a shared triple retains the last dual selection for the lab link',()=>{
+  const route=initialRoute('https://viewer.test/?triple=1.4.7#triple',ids,{saved:{head:1,body:4,alt:'a',variantExplicit:true},tripleIds:new Set(['1.4.7']),random:()=>0});
+  assert.deepEqual(route,{head:1,body:4,alt:'a',variantExplicit:true,page:'triple',triple:'1.4.7'});
+});

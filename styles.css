@@ -100,6 +100,52 @@ dialog.picker-dialog[open]{display:grid;grid-template-rows:auto auto auto auto m
 .formula-note p{margin-top:5px}
 .comparison-note{font-size:10px;color:#888;line-height:1.6;margin-top:6px;overflow-wrap:anywhere}
 .compare-controls[hidden],.comparison-note[hidden]{display:none}
+footer .footer-notes{flex-basis:100%;display:grid;grid-template-columns:minmax(0,1fr);gap:12px;width:100%;min-width:0;white-space:normal;font-size:11px;line-height:1.7;color:#888}
+.footer-notes>section{min-width:0}
+.footer-notes .footer-contribution p{margin:0;line-height:1.55}
+.footer-resource-links{display:inline-flex;flex-wrap:wrap;gap:6px 14px;margin-left:6px;vertical-align:baseline}
+.footer-notes .footer-community{display:inline;margin-left:4px}
+.footer-notes p{max-width:none;text-align:left;margin-left:0}
+.footer-notes p+p{margin-top:3px}
+.footer-notes .contribution-policy{display:inline;margin-left:5px;font-size:10px;line-height:1.4;vertical-align:super;color:#888}
+.footer-notes a{color:#666;text-decoration:none;white-space:nowrap}
+.footer-notes a:hover{text-decoration:underline;text-underline-offset:3px}
+footer{flex-wrap:wrap}
+.triple-select-label{display:flex;align-items:center;gap:12px;margin-bottom:18px;color:#777;font-size:12px;max-width:760px}
+.triple-select-label>.combobox{flex:1}
+.triple-select-label>span{white-space:nowrap}
+.triple-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,420px);gap:36px;align-items:start}
+.triple-layout>.stats-panel{border:0;padding-top:6px}
+.triple-sprite{display:block;object-fit:contain;width:100%;height:100%;image-rendering:pixelated;min-width:0}
+.triple-hero{width:288px;max-width:100%;height:288px}
+.triple-parents{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px}
+.triple-parents>div{display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid var(--line);border-radius:6px;padding:5px;min-width:0}
+.triple-parents .sprite-wrap{width:64px;height:64px}
+.triple-parents strong{font-size:12px;font-weight:500;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.triple-parents small{font-size:9px;color:#999}
+.triple-grid .card-sprite-area>.triple-sprite{width:132px;height:132px;max-width:100%}
+.triple-component-names{font-size:10px;color:#999;display:block;line-height:1.5;margin:4px 0 7px;min-height:3em}
+.triple-grid .type-row{flex-wrap:wrap}
+@media(max-width:900px){.triple-layout{gap:24px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.triple-layout .stats-panel{display:block;grid-column:auto}.triple-layout .stat-row{grid-template-columns:50px minmax(10px,1fr) 36px}}
+@media(max-width:600px){
+  footer .footer-notes{grid-template-columns:minmax(0,1fr);gap:12px}
+  .header nav{gap:14px}
+  .nav-link{font-size:11px}
+  .triple-select-label{font-size:11px;gap:8px;align-items:flex-start;flex-direction:column}
+  .triple-select-label .combobox{width:100%}
+  .triple-layout{display:block}
+  .triple-layout .fusion-stage{height:260px}
+  .triple-hero{width:252px;height:252px}
+  .triple-layout>.stats-panel{display:grid;padding-top:18px;margin-top:18px;border-top:1px solid var(--line)}
+  .triple-layout .stat-row{grid-template-columns:37px minmax(15px,1fr) 32px}
+  .triple-grid .card-sprite-area>.triple-sprite{width:100%;height:100%}
+  .triple-parents .sprite-wrap{width:56px;height:56px}
+  .triple-parents strong{font-size:11px}
+  .triple-component-names{font-size:9px}
+  .dex-filters .combobox[data-for=dex-artist]{width:152px}
+  .footer-notes,.footer-notes p{font-size:10px}
+  .footer-notes .contribution-policy{font-size:9px}
+}
 .compare-controls{flex-wrap:wrap}
 .compare-controls>button[aria-pressed=true]{color:#222}
 footer .footer-links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-left:auto}
@@ -131,4 +177,14 @@ footer .footer-links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px
   .scenario-fields .field-hint{font-size:11px;line-height:1.5}
   .sprite-usage{font-size:9px}
   .calculation-breakdown{margin-top:8px}
+}
+
+/* Keep full Japanese fusion labels readable on narrow screens. */
+@media(max-width:900px){
+  html[lang=ja] .header{flex-wrap:wrap;height:auto}
+  html[lang=ja] .header nav{order:3;flex-basis:100%;width:100%;height:auto;flex-wrap:wrap;gap:0 14px}
+  html[lang=ja] .header-tools{margin-left:auto}
+}
+@media(max-width:600px){
+  html[lang=ja] .header nav .nav-link{flex:0 0 calc(50% - 7px);text-align:left}
 }

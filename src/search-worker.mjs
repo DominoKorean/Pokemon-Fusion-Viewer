@@ -19,15 +19,15 @@ async function loadIndex(){
 }
 self.onmessage=async({data:message})=>{
   if(message.kind==='init'){data=message.catalog;return;}
-  const {id,query,advanced=true,scope='game',tag,type,customOnly,sort,page,pageSize=24,lang}=message;
+  const {id,query,advanced=true,scope='game',tag,artist='',type,customOnly,sort,page,pageSize=24,lang}=message;
   try{
     const typeAliases=Object.fromEntries(data.types.map(t=>[t.key,Object.values(t.names)]));
     const nameMatcher=createNameMatcher(data.pokemon,lang);
     const filter=advanced?compileQuery(query,{types:typeAliases,tags:data.metadata.tags.map(t=>t.key),nameMatcher}).test:createSimpleSearch(query,nameMatcher);
     const spriteGroups=await loadIndex();const matches=[];
     for(const head of data.pokemon)for(const body of data.pokemon){
-      const variants=eligibleVariants(spriteGroups.get(head.id*1000+body.id),scope,tag);
-      if((customOnly||tag||scope==='other')&&!variants.length)continue;
+      const variants=eligibleVariants(spriteGroups.get(head.id*1000+body.id),scope,tag,artist);
+      if((customOnly||tag||artist||scope==='other')&&!variants.length)continue;
       const f=makeFusion(head,body);
       if(type&&!f.types.includes(type))continue;
       let chosen;
