@@ -2,7 +2,7 @@ import { mkdir,writeFile } from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {readMarshal} from './ruby-marshal.mjs';
 import {parseCSV} from './csv.mjs';
-import {deriveSpriteInventory} from '../src/dex-data.mjs';
+import {deriveSpriteInventory,deriveArtistInventory} from '../src/dex-data.mjs';
 
 const ROOT=new URL('../public/data/',import.meta.url);
 const game='https://raw.githubusercontent.com/infinitefusion/infinitefusion-e18/main/';
@@ -76,6 +76,7 @@ const artistIds=new Map(artists.map((a,i)=>[a,i])),tagIds=new Map(tagKeys.map((a
 const rows=[...byHead].flatMap(([head,entries])=>entries.map(s=>[head,s.body,s.alt,artistIds.get(s.artist),s.tags.map(t=>tagIds.get(t)),s.status,...(s.listed===false?[false]:[])]));
 Object.assign(metadata,deriveSpriteInventory({tags:tagKeys,rows}),{unlistedVariantCount:rows.filter(r=>r[6]===false).length,inventoryCheckedAt:new Date().toISOString()});
 await writeFile(new URL('search-index.json',ROOT),JSON.stringify({artists,tags:tagKeys,rows}));
+await writeFile(new URL('artists.json',ROOT),JSON.stringify(deriveArtistInventory({artists,rows})));
 const catalog={metadata,pokemon,types,stats,natures,abilities};
 await writeFile(new URL('catalog.json',ROOT),JSON.stringify(catalog));
 console.log(`Imported ${pokemon.length} official species, ${variantCount} credited sprites, ${tags.size} external tags. Sources recorded with SHA-256.`);

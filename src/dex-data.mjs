@@ -8,8 +8,17 @@ export function selectVariant(variants=[],{alt='',explicit=false}={}){
 }
 // Dex membership follows the official inventory, independently of default selection.
 export const spriteScope=variant=>variant.listed===false?'other':'game';
-export function eligibleVariants(variants=[],scope='game',tag=''){
-  return variants.filter(v=>spriteScope(v)===scope&&(!tag||v.tags?.includes(tag)));
+export const creditedArtists=credit=>[...new Set(String(credit||'').split(/\s+&\s+|;/).map(name=>name.trim()).filter(Boolean))];
+export function eligibleVariants(variants=[],scope='game',tag='',artist=''){
+  return variants.filter(v=>spriteScope(v)===scope&&(!tag||v.tags?.includes(tag))&&(!artist||creditedArtists(v.artist).some(name=>name.toLowerCase()===artist.toLowerCase())));
+}
+export function deriveArtistInventory(index){
+  const counts=new Map();
+  for(const row of index.rows)for(const name of creditedArtists(index.artists[row[3]])){
+    if(!counts.has(name))counts.set(name,{name,game:0,other:0});
+    counts.get(name)[row[6]===false?'other':'game']++;
+  }
+  return [...counts.values()].sort((a,b)=>a.name.localeCompare(b.name));
 }
 export function spriteUsage(variant,variants=[]){
   if(variant.listed===false)return 'notApplied';

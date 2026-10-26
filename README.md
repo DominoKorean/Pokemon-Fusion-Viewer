@@ -6,9 +6,9 @@
 
 <p><strong>English</strong> &nbsp; · &nbsp; <a href="README.ko.md">한국어</a> &nbsp; · &nbsp; <a href="README.ja.md">日本語</a></p>
 
-<p><strong>Fuse Pokémon. Browse sprites. Compare stats.</strong></p>
+<p><strong>Mobile optimized · Compare stat changes · Easy search</strong></p>
 
-<p>A compact, ad-free viewer for Pokémon Infinite Fusion.<br>English by default, with Korean and Japanese support.</p>
+<p>A compact viewer for Pokémon Infinite Fusion sprites and stats.<br>English by default, with Korean and Japanese support.</p>
 
 <p>
   <a href="https://dominokorean.github.io/Pokemon-Fusion-Viewer/"><strong>Open Fusion Viewer ↗</strong></a>
@@ -20,13 +20,7 @@
   <a href="#quick-start">Run locally</a>
 </p>
 
-<p><code>Mobile friendly</code> &nbsp; <code>No ads</code> &nbsp; <code>EN / 한국어 / 日本語</code></p>
-
 </div>
-
----
-
-> Yes, this is vibe-coded slop. I built it because other fusion sites were awkward to use on mobile, and I was tired of the ads. So I made a viewer for myself.
 
 ## Features
 
@@ -62,11 +56,21 @@ Bookmarks and the last viewed fusion use `localStorage`. They stay in that brows
 
 Calculation rules remain visible above sprite variants. GitHub and bug report / feedback links are available in the footer.
 
+The picker keeps type, generation, sort and legendary filters when closed and reopened, including between head and body selection. Filters are remembered in this browser.
+
+## Triple fusions
+
+Browse **23 official triple combinations** on the Triple fusions tab. Each uses its dedicated base stats, types, abilities and sprite from the external game database. The viewer does not generate unsupported three-Pokémon combinations. Level, IV, EV and nature controls, bookmarks, shared links, browser history and last-view restoration work for triples too.
+
+Refresh the triple snapshot with `npm run sync-triples` after updating the main snapshot. Source URLs and SHA-256 hashes are recorded in `public/data/triples.json`.
+
 ## Search
+
+The searchable **Artist** selector sits beside sprite tags. Artist, tag and availability scope must match the same sprite; collaborations are credited to each artist. Advanced search also supports `artist:"daz1610" AND atk:>=80` (English field key).
 
 ### Simple search
 
-Type a Pokémon name or fusion ID. Results update after a **220 ms** pause; Korean IME composition finishes before a search starts. Only the latest queued query is retained.
+Type a Pokémon name or fusion ID. Results update after a **220 ms** pause. Only the latest queued query is retained.
 
 Separate terms with **spaces or commas** to require every term:
 
@@ -76,7 +80,7 @@ Pikachu, Bulbasaur
 25.1
 ```
 
-The first two queries find both head/body orders. Partial names and names from different supported languages can be combined. In Korean mode, [hansearch](https://github.com/hwantage/hansearch) also supports initial-consonant and mixed Hangul input, such as `ㅍㅋㅊ ㅇㅅㅎㅆ`.
+The first two queries find both head/body orders. Partial names and names from different supported languages can be combined.
 
 Simple and advanced search keep their inputs and applied conditions separate. Simple search treats field expressions as plain text.
 
@@ -166,6 +170,14 @@ The dex is split into **Game dex** and **In-game unverified**, based on the curr
 Source forms can share translated names, so the picker also shows their original identifiers. Sprite credits are checked against the published image inventory, and variants with missing image files are excluded from the search index.
 
 </details>
+
+## Contribute to Pokémon Infinite Fusion
+
+Pokémon Infinite Fusion is made possible by its many contributors! Get involved by adding sprites, writing Pokédex entries and contributing directly to Pokémon Infinite Fusion. [Official Discord community ↗](https://discord.gg/infinitefusion)
+
+<sub>* Pokémon Infinite Fusion prohibits AI contributions.</sub>
+
+For features not available here, please visit the following sites. [FusionDex](https://fusiondex.org/) · [Infinite Dex](https://infinitefusiondex.com/)
 
 ## Credits
 
