@@ -1,0 +1,46 @@
+import hansearch from './vendor/hansearch.mjs';
+
+export function parseNumericInput(text,{min,max}){if(!/^\d+$/.test(text))return null;const value=Number(text);return Number.isSafeInteger(value)&&value>=min&&value<=max?value:null;}
+let currentMenu=null;
+export function closeCombobox(){currentMenu?.close();currentMenu=null;}
+export function enhanceSelects(container,{lang='ko'}={}){
+  if(currentMenu&&!currentMenu.input.isConnected)closeCombobox();
+  for(const select of container.querySelectorAll('select:not([data-enhanced])'))enhance(select,lang);
+}
+function enhance(select,lang){
+  select.dataset.enhanced='true';
+  const languageOnly=select.id==='language';
+  const numeric=select.id==='level'?{min:1,max:100}:select.id==='iv'?{min:0,max:31}:null;
+  const all=[...select.options].map(o=>({value:o.value,label:o.text,disabled:o.disabled}));
+  const widget=document.createElement('div');widget.className='combobox';widget.dataset.for=select.id;
+  const input=document.createElement(languageOnly?'button':'input');input.id=`${select.id}-input`;input.className=languageOnly?'combo-input combo-display':'combo-input';input.type=languageOnly?'button':'text';input.autocomplete='off';input.spellcheck=false;input.setAttribute('role','combobox');if(!languageOnly)input.setAttribute('aria-autocomplete','list');input.setAttribute('aria-expanded','false');input.setAttribute('aria-haspopup','listbox');if(numeric)input.inputMode='numeric';
+  const label=select.closest('label')?.cloneNode(true);label?.querySelectorAll('select').forEach(el=>el.remove());
+  input.setAttribute('aria-label',select.getAttribute('aria-label')||label?.textContent.trim()||select.id);
+  const display=languageOnly?input:document.createElement('button');
+  if(!languageOnly){display.type='button';display.className='combo-input combo-display';display.hidden=true;display.setAttribute('role','combobox');display.setAttribute('aria-label',input.getAttribute('aria-label'));display.setAttribute('aria-haspopup','listbox');display.setAttribute('aria-expanded','false');}
+  const arrow=document.createElement('button');arrow.type='button';arrow.className='combo-arrow';arrow.tabIndex=-1;arrow.innerHTML='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>';arrow.setAttribute('aria-label',lang==='ko'?'선택 목록 열기':lang==='ja'?'選択肢を開く':'Open options');
+  const popup=document.createElement('div');popup.className='combo-popup';popup.id=`${select.id}-options`;popup.setAttribute('role','listbox');input.setAttribute('aria-controls',popup.id);display.setAttribute('aria-controls',popup.id);
+  let filtered=all,active=-1,opened=false,menuOnly=languageOnly;
+  const selectedLabel=()=>all.find(o=>o.value===select.value)?.label||'';
+  function setLabel(text){input.value=text;display.textContent=text;}
+  function setMenuOnly(value){if(numeric)return;menuOnly=value||languageOnly;widget.classList.toggle('menu-only',menuOnly);if(!languageOnly){input.hidden=menuOnly;display.hidden=!menuOnly;}}
+  setLabel(selectedLabel());setMenuOnly(languageOnly);select.classList.add('native-select');select.tabIndex=-1;select.setAttribute('aria-hidden','true');
+  select.after(widget);widget.append(input);if(!numeric&&!languageOnly)widget.append(display);widget.append(arrow);
+  function close(){opened=false;input.setAttribute('aria-expanded','false');display.setAttribute('aria-expanded','false');input.removeAttribute('aria-activedescendant');display.removeAttribute('aria-activedescendant');widget.classList.remove('is-open');popup.remove();document.removeEventListener('pointerdown',outside,true);document.removeEventListener('scroll',scroll,true);window.removeEventListener('resize',close);if(currentMenu?.input===input)currentMenu=null;}
+  function outside(e){if(!widget.contains(e.target)&&!popup.contains(e.target)){setLabel(selectedLabel());input.removeAttribute('aria-invalid');close();}}
+  function scroll(e){if(!popup.contains(e.target))close();}
+  function position(){const rect=widget.getBoundingClientRect(),viewWidth=document.documentElement.clientWidth,width=Math.min(Math.max(rect.width,numeric?rect.width:220),viewWidth-24);const room=window.innerHeight-rect.bottom;popup.style.width=`${width}px`;popup.style.left=`${Math.max(12,Math.min(rect.left,viewWidth-width-12))}px`;popup.style.maxHeight=`${Math.max(80,Math.min(250,room>120?room-10:rect.top-12))}px`;if(room>120){popup.style.top=`${rect.bottom+5}px`;popup.style.bottom='auto';}else{popup.style.bottom=`${window.innerHeight-rect.top+5}px`;popup.style.top='auto';}}
+  function paint(){popup.replaceChildren();for(const [index,option]of filtered.entries()){const row=document.createElement('button');row.type='button';row.className='combo-option';row.id=`${popup.id}-${index}`;row.setAttribute('role','option');row.setAttribute('aria-selected',String(option.value===select.value));row.dataset.active=String(index===active);row.textContent=option.label;row.disabled=option.disabled;row.addEventListener('pointerdown',e=>e.preventDefault());row.addEventListener('click',()=>choose(option));popup.append(row);}if(!filtered.length){const empty=document.createElement('div');empty.className='combo-empty';empty.textContent=numeric?`${numeric.min} – ${numeric.max}`:lang==='ko'?'일치하는 항목이 없습니다':lang==='ja'?'一致する項目はありません':'No matching options';popup.append(empty);}if(active>=0){input.setAttribute('aria-activedescendant',`${popup.id}-${active}`);display.setAttribute('aria-activedescendant',`${popup.id}-${active}`);popup.children[active]?.scrollIntoView({block:'nearest'});}else{input.removeAttribute('aria-activedescendant');display.removeAttribute('aria-activedescendant');}}
+  function open(filter=false){if(!opened){closeCombobox();opened=true;currentMenu={input,close};(select.closest('dialog')||document.body).append(popup);document.addEventListener('pointerdown',outside,true);document.addEventListener('scroll',scroll,true);window.addEventListener('resize',close);input.setAttribute('aria-expanded','true');display.setAttribute('aria-expanded','true');widget.classList.add('is-open');}const q=filter?input.value.trim():'';filtered=!q?all:lang==='ko'?all.filter(option=>hansearch([option],q,['label']).items.length>0):all.filter(o=>o.label.toLocaleLowerCase().includes(q.toLocaleLowerCase()));active=filter?-1:filtered.findIndex(o=>o.value===select.value);position();paint();}
+  function choose(option){const selectedFromMenu=menuOnly;select.value=option.value;setLabel(option.label);close();select.dispatchEvent(new Event('change',{bubbles:true}));queueMicrotask(()=>{const control=document.getElementById(input.id);const target=selectedFromMenu&&!languageOnly?control?.closest('.combobox')?.querySelector('.combo-arrow'):control;target?.focus({preventScroll:true});});}
+  input.addEventListener('focus',()=>{if(numeric)select.dispatchEvent(new CustomEvent('numericstart',{bubbles:true}));});
+  input.addEventListener('click',()=>{if(languageOnly){if(opened)close();else open();}else{setMenuOnly(false);input.select();open();}});
+  if(!numeric&&!languageOnly)display.addEventListener('click',()=>{setMenuOnly(false);input.focus();input.select();open();});
+  arrow.addEventListener('pointerdown',e=>e.preventDefault());arrow.addEventListener('click',()=>{if(opened)close();else{if(numeric)input.focus();else{setLabel(selectedLabel());setMenuOnly(true);display.focus();}open();}});
+  input.addEventListener('input',event=>{if(languageOnly||menuOnly||event.isComposing)return;open(true);if(numeric){const value=parseNumericInput(input.value,numeric);input.setAttribute('aria-invalid',String(value===null));if(value!==null){select.value=String(value);select.dataset.live='true';select.dispatchEvent(new CustomEvent('numericchange',{bubbles:true,detail:{value}}));}}});
+  input.addEventListener('compositionend',()=>{open(true);});
+  function keydown(event){if(event.isComposing)return;if(['ArrowDown','ArrowUp'].includes(event.key)){event.preventDefault();if(!opened)open();else{active=Math.max(0,Math.min(filtered.length-1,active+(event.key==='ArrowDown'?1:-1)));paint();}}else if(event.key==='Enter'){event.preventDefault();if(numeric&&parseNumericInput(input.value,numeric)!==null){choose(all.find(o=>o.value===String(Number(input.value))));}else if(opened&&filtered[active>=0?active:0])choose(filtered[active>=0?active:0]);else if(menuOnly)open();}else if(event.key==='Escape'){setLabel(selectedLabel());input.removeAttribute('aria-invalid');if(opened){event.preventDefault();event.stopPropagation();close();}}else if(event.key==='Tab'){const exact=all.find(o=>o.label.toLocaleLowerCase()===input.value.trim().toLocaleLowerCase());if(!menuOnly&&exact&&exact.value!==select.value)choose(exact);else setLabel(selectedLabel());close();}}
+  input.addEventListener('keydown',keydown);if(display!==input)display.addEventListener('keydown',keydown);arrow.addEventListener('keydown',keydown);
+  function blur(){queueMicrotask(()=>{if(!widget.contains(document.activeElement)&&!popup.contains(document.activeElement)){setLabel(selectedLabel());input.removeAttribute('aria-invalid');close();}});}
+  input.addEventListener('blur',blur);if(display!==input)display.addEventListener('blur',blur);
+}
