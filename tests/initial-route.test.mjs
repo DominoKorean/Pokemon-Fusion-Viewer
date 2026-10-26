@@ -41,3 +41,8 @@ test('opening a shared triple retains the last dual selection for the lab link',
   const route=initialRoute('https://viewer.test/?triple=1.4.7#triple',ids,{saved:{head:1,body:4,alt:'a',variantExplicit:true},tripleIds:new Set(['1.4.7']),random:()=>0});
   assert.deepEqual(route,{head:1,body:4,alt:'a',variantExplicit:true,page:'triple',triple:'1.4.7'});
 });
+
+test('a clean dex entry restores parents without allowing a remembered triple to change the tab',()=>{
+  const route=initialRoute('https://viewer.test/Pokemon-Fusion-Viewer/dex.html',ids,{saved:{head:1,body:4,page:'triple',triple:'1.4.7'},tripleIds:new Set(['1.4.7']),random:()=>{throw Error('Use saved parents');}});
+  assert.equal(route.page,'dex');assert.equal(route.head,1);assert.equal(route.body,4);
+});
