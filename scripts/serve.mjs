@@ -19,4 +19,4 @@ const server=http.createServer(async(req,res)=>{
     res.writeHead(200,headers);res.end(bytes);
   }catch{res.writeHead(404);res.end('Not found');}
 });
-server.listen(Number(process.env.PORT)||5173,'127.0.0.1',()=>console.log(`Local: http://127.0.0.1:${server.address().port}`));
+server.listen(Number(process.env.PORT??5173),'127.0.0.1',()=>console.log(`Local: http://127.0.0.1:${server.address().port}`));

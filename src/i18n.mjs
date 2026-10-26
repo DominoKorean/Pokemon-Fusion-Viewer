@@ -43,4 +43,25 @@ Object.assign(ja,{
 Object.assign(ko,{baseStatFormula:'머리와 몸통의 기여분을 각각 버린 뒤 더합니다. 합계는 최소 1입니다.'});
 Object.assign(en,{baseStatFormula:'Floor each parent contribution separately, then add them. The minimum base stat is 1.'});
 Object.assign(ja,{baseStatFormula:'頭と体の寄与分をそれぞれ切り捨てて加算します。種族値の最小値は1です。'});
+Object.assign(ko,{
+  gameDex:'기본 도감',otherTags:'인게임 확인 불가',otherSprites:'확인 불가 스프라이트',notApplied:'인게임 확인 불가',
+  gameNote:'현재 공식 스프라이트 목록 기준입니다. 기본·대체 이미지를 모두 포함하며, 설치한 게임 버전에 따라 다를 수 있습니다.',
+  otherNote:'현재 공식 스프라이트 목록에 없어 인게임 사용 여부를 확인할 수 없는 이미지입니다. 미사용으로 확정한 것은 아니며, 수동 설치는 별개입니다.'
+});
+Object.assign(en,{
+  gameDex:'Game dex',otherTags:'In-game unverified',otherSprites:'unverified sprites',notApplied:'In-game unverified',
+  gameNote:'Based on the current official sprite inventory. Includes defaults and alternatives; availability may vary by installed game version.',
+  otherNote:'Absent from the current official sprite inventory, so in-game availability is unverified. This does not establish that a sprite is unused; manual installation is separate.'
+});
+Object.assign(ja,{
+  gameDex:'基本図鑑',otherTags:'ゲーム内確認不可',otherSprites:'確認不可のスプライト',notApplied:'ゲーム内確認不可',
+  gameNote:'現在の公式スプライト一覧が基準です。標準・代替画像を含み、インストールしたゲームのバージョンによって異なる場合があります。',
+  otherNote:'現在の公式スプライト一覧にないため、ゲーム内での使用を確認できない画像です。未使用と断定するものではなく、手動インストールとは別の扱いです。'
+});
+Object.assign(ko,{feedback:'버그 리포트 및 피드백',compare:'변화량 표시',unpin:'기준 고정 해제',noComparison:'아직 변경 없음'});
+Object.assign(en,{feedback:'Bug reports & feedback',compare:'Show changes',unpin:'Unpin baseline',noComparison:'No changes yet'});
+Object.assign(ja,{feedback:'不具合報告・フィードバック',compare:'変化量を表示',unpin:'基準の固定を解除',noComparison:'まだ変更なし'});
+Object.assign(ko,{natureComparison:'현재 성격 보정 · 무보정 대비',fixedComparison:'고정 기준과 비교 · 성격 보정과 별개',previousComparison:'이번 입력 전과 비교',noComparison:'비교 초기화 · 아직 변경 없음'});
+Object.assign(en,{natureComparison:'Current nature effect · versus neutral',fixedComparison:'Pinned comparison · separate from nature effects',previousComparison:'Compared with before this edit',noComparison:'Comparison reset · no changes yet'});
+Object.assign(ja,{natureComparison:'現在の性格補正・無補正との比較',fixedComparison:'固定基準との比較・性格補正とは別',previousComparison:'今回の入力前との比較',noComparison:'比較をリセット・まだ変更なし'});
 export const translations={ko,en,ja};

@@ -29,19 +29,21 @@ test('advanced name expressions use hansearch while numeric filters stay exact',
   assert.equal(compileQuery('name:ㅍㅋㅊ AND atk:80',{nameMatcher:matchName}).test(record),true);
   assert.equal(compileQuery('ㅍㅋㅊ AND atk:81',{nameMatcher:matchName}).test(record),false);
 });
-test('official status determines main vs miscellaneous, never a tag name',()=>{
+test('inventory membership determines dex scope regardless of status or tag',()=>{
   assert.equal(spriteScope({status:'main',tags:['reference']}),'game');
-  assert.equal(spriteScope({status:'alt',tags:['sword']}),'other');
+  assert.equal(spriteScope({status:'alt',tags:['sword']}),'game');
   assert.equal(spriteScope({status:'temp',tags:[]}),'game');
-  const variants=[{status:'main',id:'1.1'},{status:'alt',id:'1.1a'},{status:'temp',id:'1.1b'}];
-  assert.deepEqual(eligibleVariants(variants,'game').map(v=>v.id),['1.1']);
-  assert.deepEqual(eligibleVariants(variants,'other').map(v=>v.id),['1.1a','1.1b']);
+  assert.equal(spriteScope({status:'t',tags:[]}),'game');
+  assert.equal(spriteScope({status:'main',listed:false}),'other');
+  const variants=[{status:'main',id:'1.1'},{status:'alt',id:'1.1a'},{status:'temp',id:'1.1b'},{status:'main',id:'1.1c',listed:false}];
+  assert.deepEqual(eligibleVariants(variants,'game').map(v=>v.id),['1.1','1.1a','1.1b']);
+  assert.deepEqual(eligibleVariants(variants,'other').map(v=>v.id),['1.1c']);
 });
-test('miscellaneous sprites never inflate main counts or main tag counts',()=>{
-  const result=deriveSpriteInventory({artists:[],tags:['reference','sword'],rows:[[1,1,'',0,[0],'main'],[1,1,'a',0,[0],'alt'],[1,2,'',0,[1],'temp']]});
-  assert.equal(result.mainVariantCount,2);assert.equal(result.otherVariantCount,1);
-  assert.deepEqual(result.mainTags,[{key:'reference',count:1},{key:'sword',count:1}]);
-  assert.deepEqual(result.otherTags,[{key:'reference',count:1}]);
+test('unverified sprites never inflate in-game counts or tag counts',()=>{
+  const result=deriveSpriteInventory({artists:[],tags:['reference','sword'],rows:[[1,1,'',0,[0],'main'],[1,1,'a',0,[0],'alt'],[1,2,'',0,[1],'temp'],[1,1,'b',0,[1],'main',false]]});
+  assert.equal(result.mainVariantCount,3);assert.equal(result.otherVariantCount,1);
+  assert.deepEqual(result.mainTags,[{key:'reference',count:2},{key:'sword',count:1}]);
+  assert.deepEqual(result.otherTags,[{key:'sword',count:1}]);
 });
 test('numeric dropdown inputs accept direct integers and reject partial or out-of-range values',()=>{
   assert.equal(parseNumericInput('57',{min:1,max:100}),57);

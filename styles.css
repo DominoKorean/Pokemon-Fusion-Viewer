@@ -92,6 +92,35 @@ dialog.picker-dialog[open]{display:grid;grid-template-rows:auto auto auto auto m
 .picker-dialog .picker-grid{height:100%;min-height:0;max-height:none;overflow-y:auto}
 .picker-sprite{width:68px;height:68px;margin-left:0}
 .picker-sprite canvas{image-rendering:auto}
+/* Keep the fusion art prominent while the parent controls stay compact. */
+.fusion-stage{height:304px}
+.hero-sprite{width:264px;height:264px;max-width:100%;object-fit:contain}
+.formula-note{max-width:none;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.formula-note h2{font-size:13px;font-weight:500;color:#555}
+.formula-note p{margin-top:5px}
+.comparison-note{font-size:10px;color:#888;line-height:1.6;margin-top:6px;overflow-wrap:anywhere}
+.compare-controls[hidden],.comparison-note[hidden]{display:none}
+.compare-controls{flex-wrap:wrap}
+.compare-controls>button[aria-pressed=true]{color:#222}
+footer .footer-links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-left:auto}
+.footer-links a,.footer-links button{font-size:11px;color:#777;text-decoration:none}
+.footer-links a:hover,.footer-links button:hover{color:#111;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:600px){
+  .lab-grid{grid-template-columns:minmax(0,2fr) minmax(0,3fr);column-gap:12px}
+  .parent-select{min-height:0;padding:3px 7px 5px;gap:0;align-items:flex-start}
+  .parent-sprite{position:static;width:56px;height:56px;margin:0}
+  .parent-info{padding-top:0;width:100%}
+  .parent-info>strong,.parent-info>small{max-width:100%;background:none}
+  .parent-info>.type-row{margin-top:4px;flex-wrap:wrap}
+  .parent-info .type-badge{font-size:9px;padding:0 5px}
+  .change-label{margin-top:2px}
+  .parent-stats{min-height:0;padding:5px 7px}
+  .fusion-stage{height:250px}
+  .hero-sprite{width:100%;max-width:236px;height:auto;aspect-ratio:1}
+  .comparison-note{font-size:10px;grid-column:2}
+  .formula-note{font-size:11px}
+  footer .footer-links{width:100%;margin-left:0;gap:8px 14px}
+}
 .pokemon-option{gap:4px;min-height:84px}
 @media(max-width:600px){
   .parent-random{width:22px;height:22px;padding:3px}
