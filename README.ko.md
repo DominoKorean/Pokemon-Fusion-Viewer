@@ -171,6 +171,12 @@ UI는 네이티브 ES 모듈·HTML·CSS로 구현했습니다. `public/data/`에
 
 </details>
 
+## 검색 노출 및 공유
+
+Pages 빌드 시 지원하는 머리·몸통 조합과 공식 트리플의 검색용 페이지, 분할 사이트맵, 대표 URL·제목·요약문, 실제 사이트 스크린샷 미리보기와 아이콘을 생성합니다. 개인 저장 목록과 필터 조합은 사이트맵에 넣지 않습니다.
+
+Search Console·Bing·네이버 등록, 소유 확인, 프로젝트 사이트의 robots.txt 제약과 이미지 수정 방법은 [검색 설정 안내](docs/SEO.ko.md)를 참고하세요. 실제 색인 여부와 검색 결과의 문구·이미지는 검색엔진이 결정합니다.
+
 ## Pokémon Infinite Fusion에 기여하기
 
 Pokémon Infinite Fusion은 여러 기여자들이 있기 때문에 가능한 프로젝트입니다! 스프라이트를 직접 추가하고 도감 설명을 작성하는 등 Pokémon Infinite Fusion에 직접 기여해 주세요. [공식 디스코드 커뮤니티 ↗](https://discord.gg/infinitefusion)

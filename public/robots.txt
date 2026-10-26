@@ -1,0 +1,5 @@
+# GitHub project paths do not control the domain-root robots.txt.
+# Submit the sitemap below directly to Search Console and Bing Webmaster Tools.
+User-agent: *
+Allow: /
+Sitemap: https://dominokorean.github.io/Pokemon-Fusion-Viewer/sitemap.xml

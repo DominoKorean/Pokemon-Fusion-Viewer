@@ -76,4 +76,7 @@ Object.assign(ja,{navSaved:'保存したフュージョン'});
 Object.assign(ko,{"moreTools":"이곳에 없는 기능은 다음 사이트를 참고해주세요.","contribute":"Pokémon Infinite Fusion은 여러 기여자들이 있기 때문에 가능한 프로젝트입니다! 스프라이트를 직접 추가하고 도감 설명을 작성하는 등 Pokémon Infinite Fusion에 직접 기여해 주세요.","officialCommunity":"공식 디스코드 커뮤니티","aiContributionPolicy":"Pokémon Infinite Fusion은 AI기여를 금지합니다."});
 Object.assign(en,{"moreTools":"For features not available here, please visit the following sites.","contribute":"Pokémon Infinite Fusion is made possible by its many contributors! Get involved by adding sprites, writing Pokédex entries and contributing directly to Pokémon Infinite Fusion.","officialCommunity":"Official Discord community","aiContributionPolicy":"Pokémon Infinite Fusion prohibits AI contributions."});
 Object.assign(ja,{"moreTools":"ここにない機能については、以下のサイトをご覧ください。","contribute":"Pokémon Infinite Fusionは、多くの貢献者に支えられて成り立つプロジェクトです！スプライトの追加や図鑑説明文の執筆などを通じて、ぜひPokémon Infinite Fusionに直接貢献してください。","officialCommunity":"公式Discordコミュニティ","aiContributionPolicy":"Pokémon Infinite FusionではAIによる貢献は禁止されています。"});
+Object.assign(en,{fusionIndex:'Fusion index'});
+Object.assign(ko,{fusionIndex:'퓨전 목록'});
+Object.assign(ja,{fusionIndex:'フュージョン一覧'});
 export const translations={ko,en,ja};

@@ -171,6 +171,12 @@ Source forms can share translated names, so the picker also shows their original
 
 </details>
 
+## Search discovery and sharing
+
+The Pages build generates crawlable entries for every supported head/body combination and official triple, a partitioned XML sitemap, canonical titles/descriptions, a real screenshot link preview and site icons. Saved views and filter combinations do not become sitemap entries.
+
+See the [search setup guide](docs/SEO.md) for Search Console/Bing/Naver registration, ownership verification, the project-site robots.txt limitation and preview-image maintenance. Actual search indexing and displayed snippets remain the search engines' decision.
+
 ## Contribute to Pokémon Infinite Fusion
 
 Pokémon Infinite Fusion is made possible by its many contributors! Get involved by adding sprites, writing Pokédex entries and contributing directly to Pokémon Infinite Fusion. [Official Discord community ↗](https://discord.gg/infinitefusion)

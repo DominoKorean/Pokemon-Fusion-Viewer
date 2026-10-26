@@ -171,6 +171,12 @@ UIはネイティブESモジュール・HTML・CSSで実装しています。`pu
 
 </details>
 
+## 検索とリンクプレビュー
+
+Pagesのビルド時に、対応する頭・体の組み合わせと公式トリプルの検索用ページ、分割サイトマップ、正規URL・タイトル・説明文、実際のサイト画面を使ったプレビュー画像とアイコンを生成します。保存一覧やフィルター条件はサイトマップに含めません。
+
+Search Console・Bing・Naverへの登録、所有権確認、プロジェクトサイトのrobots.txtの制約、画像の更新方法は[検索設定ガイド（英語）](docs/SEO.md)をご覧ください。実際のインデックス登録と検索結果の表示内容は検索エンジンが決定します。
+
 ## Pokémon Infinite Fusionに貢献する
 
 Pokémon Infinite Fusionは、多くの貢献者に支えられて成り立つプロジェクトです！スプライトの追加や図鑑説明文の執筆などを通じて、ぜひPokémon Infinite Fusionに直接貢献してください。 [公式Discordコミュニティ ↗](https://discord.gg/infinitefusion)
