@@ -68,3 +68,38 @@
 .page-jump-form input:focus{outline:none;border-color:#777;box-shadow:0 0 0 2px #00000008}
 .page-jump-form input[aria-invalid=true]{border-color:#555}
 .page-jump-form .pill{min-height:32px;padding:4px 11px;font-size:11px}
+
+.parent-tools{display:flex;align-items:center;gap:6px}
+.parent-random{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:1px solid var(--line);border-radius:50%;color:#666;padding:4px}
+.parent-random svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.3}
+.sprite-usage{display:block;width:fit-content;max-width:100%;margin:5px auto 0;padding:2px 6px;border:1px solid var(--line);border-radius:4px;font-size:10px;color:#777;line-height:1.5;text-align:center}
+.sprite-usage.not-applied{background:#f4f4f4;border-style:dashed;color:#555}
+.card-main .sprite-usage{margin:5px 0 0;font-size:9px}
+.variant-card .sprite-usage{font-size:9px}
+.scenario-fields .field-hint{display:block;min-height:2.7em;font-family:inherit;font-size:11px;line-height:1.4;color:#777;overflow-wrap:anywhere}
+.scenario-fields .ability-field{flex-wrap:wrap}
+.scenario-fields .ability-field .field-hint{flex-basis:100%;min-height:0}
+.total-row>small{font:10px var(--mono);color:#888;margin-left:8px}
+.calculation-breakdown{grid-column:1/-1;min-width:0;margin-top:10px;padding-top:8px;border-top:1px solid var(--line);font-size:11px;color:#666}
+.calculation-breakdown summary{cursor:pointer;font-size:11px;color:#555;padding:3px 0}
+.calculation-breakdown>div{overflow-x:auto;margin-top:7px}
+.calculation-breakdown table{width:100%;border-collapse:collapse;font:10px/1.5 var(--mono);text-align:right;white-space:nowrap}
+.calculation-breakdown th,.calculation-breakdown td{border-bottom:1px solid #0000000a;padding:4px 3px;font-weight:400}
+.calculation-breakdown th:first-child{text-align:left}
+.calculation-breakdown p{font-size:11px;line-height:1.6;margin-top:7px}
+.calculation-breakdown .hp-rule{color:#333}
+dialog.picker-dialog[open]{display:grid;grid-template-rows:auto auto auto auto minmax(0,1fr);position:fixed;top:clamp(12px,6vh,48px);bottom:auto;left:0;right:0;margin:0 auto;height:min(720px,calc(100dvh - 32px));max-height:calc(100dvh - 32px);overflow:hidden}
+.picker-dialog .picker-grid{height:100%;min-height:0;max-height:none;overflow-y:auto}
+.picker-sprite{width:68px;height:68px;margin-left:0}
+.picker-sprite canvas{image-rendering:auto}
+.pokemon-option{gap:4px;min-height:84px}
+@media(max-width:600px){
+  .parent-random{width:22px;height:22px;padding:3px}
+  .parent-tools{gap:4px}
+  dialog.picker-dialog[open]{top:12px}
+  .picker-sprite{width:64px;height:64px;margin-left:0}
+  .pokemon-option{min-height:82px}
+  .scenario-fields .field-hint{font-size:11px;line-height:1.5}
+  .sprite-usage{font-size:9px}
+  .calculation-breakdown{margin-top:8px}
+}

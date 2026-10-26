@@ -32,16 +32,16 @@ test('advanced name expressions use hansearch while numeric filters stay exact',
 test('official status determines main vs miscellaneous, never a tag name',()=>{
   assert.equal(spriteScope({status:'main',tags:['reference']}),'game');
   assert.equal(spriteScope({status:'alt',tags:['sword']}),'other');
-  assert.equal(spriteScope({status:'temp',tags:[]}),'other');
+  assert.equal(spriteScope({status:'temp',tags:[]}),'game');
   const variants=[{status:'main',id:'1.1'},{status:'alt',id:'1.1a'},{status:'temp',id:'1.1b'}];
   assert.deepEqual(eligibleVariants(variants,'game').map(v=>v.id),['1.1']);
   assert.deepEqual(eligibleVariants(variants,'other').map(v=>v.id),['1.1a','1.1b']);
 });
 test('miscellaneous sprites never inflate main counts or main tag counts',()=>{
   const result=deriveSpriteInventory({artists:[],tags:['reference','sword'],rows:[[1,1,'',0,[0],'main'],[1,1,'a',0,[0],'alt'],[1,2,'',0,[1],'temp']]});
-  assert.equal(result.mainVariantCount,1);assert.equal(result.otherVariantCount,2);
-  assert.deepEqual(result.mainTags,[{key:'reference',count:1}]);
-  assert.deepEqual(result.otherTags,[{key:'reference',count:1},{key:'sword',count:1}]);
+  assert.equal(result.mainVariantCount,2);assert.equal(result.otherVariantCount,1);
+  assert.deepEqual(result.mainTags,[{key:'reference',count:1},{key:'sword',count:1}]);
+  assert.deepEqual(result.otherTags,[{key:'reference',count:1}]);
 });
 test('numeric dropdown inputs accept direct integers and reject partial or out-of-range values',()=>{
   assert.equal(parseNumericInput('57',{min:1,max:100}),57);

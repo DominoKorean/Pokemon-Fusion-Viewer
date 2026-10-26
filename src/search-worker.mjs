@@ -8,7 +8,7 @@ async function loadIndex(){
   if(groups)return groups;
   if(!indexPromise)indexPromise=fetch(assetURL('data/search-index.json')).then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json();}).then(index=>{
     const grouped=new Map();
-    for(const [head,body,alt,artist,tags,status]of index.rows){const key=head*1000+body;if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push({id:`${head}.${body}${alt}`,alt,artist:index.artists[artist],tags:tags.map(i=>index.tags[i]),status});}
+    for(const [head,body,alt,artist,tags,status,listed]of index.rows){const key=head*1000+body;if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push({id:`${head}.${body}${alt}`,alt,artist:index.artists[artist],tags:tags.map(i=>index.tags[i]),status,listed:listed!==false});}
     for(const variants of grouped.values())variants.sort((a,b)=>(a.alt!==''&&a.status!=='main')-(b.alt!==''&&b.status!=='main')||a.alt.length-b.alt.length||a.alt.localeCompare(b.alt));
     groups=grouped;return grouped;
   }).catch(e=>{indexPromise=null;throw e;});

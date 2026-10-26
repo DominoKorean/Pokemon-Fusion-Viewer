@@ -5,12 +5,20 @@ export function fuseTypes(head,body){
   const second=body.types[1]||body.types[0];
   return [...new Set([first,second===first?body.types[0]:second])];
 }
-export function actualStats(base,{level=50,iv=31,ev=[0,0,0,0,0,0],nature={},wonderGuard=false}={}){
+export function statCalculations(base,{level=50,iv=31,ev=[0,0,0,0,0,0],nature={},wonderGuard=false}={}){
   if(!Number.isInteger(level)||level<1||level>100)throw Error('Invalid level');
   if(!Number.isInteger(iv)||iv<0||iv>31)throw Error('Invalid IV');
   if(ev.length!==6||ev.some(v=>!Number.isInteger(v)||v<0||v>252)||ev.reduce((a,b)=>a+b,0)>510)throw Error('Invalid EV distribution');
-  return base.map((v,i)=>{if(i===0&&(v===1||wonderGuard))return 1;const core=Math.floor((2*v+iv+Math.floor(ev[i]/4))*level/100);if(i===0)return core+level+10;const modifier=nature.up===nature.down?1:nature.up===i?1.1:nature.down===i?0.9:1;return Math.floor((core+5)*modifier);});
+  return base.map((v,i)=>{
+    const evContribution=Math.floor(ev[i]/4),levelValue=Math.floor((2*v+iv+evContribution)*level/100);
+    const beforeNature=levelValue+(i===0?level+10:5);
+    const naturePercent=i===0||nature.up===nature.down?100:nature.up===i?110:nature.down===i?90:100;
+    const hpException=i===0?(v===1?'baseHP':wonderGuard?'wonderGuard':null):null;
+    const value=hpException?1:Math.floor(beforeNature*naturePercent/100);
+    return {base:v,iv,ev:ev[i],evContribution,level,levelValue,beforeNature,naturePercent,natureDelta:hpException?0:value-beforeNature,hpException,value};
+  });
 }
+export const actualStats=(base,settings)=>statCalculations(base,settings).map(s=>s.value);
 export const statDeltas=(current,previous)=>current.map((v,i)=>v-previous[i]);
 export function makeFusion(head,body,variant={},names={}){
   const stats=fuseStats(head.stats,body.stats);

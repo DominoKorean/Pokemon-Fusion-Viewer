@@ -13,4 +13,34 @@ Object.assign(ja,{firstPage:'最初',lastPage:'最後',pageNavigation:'ページ
 Object.assign(ko,{pageNumber:'이동할 페이지 번호',goToPage:'이동'});
 Object.assign(en,{pageNumber:'Page number',goToPage:'Go'});
 Object.assign(ja,{pageNumber:'移動先のページ番号',goToPage:'移動'});
+Object.assign(ko,{
+  randomHead:'머리 무작위',randomBody:'몸통 무작위',compare:'직전 변경과 비교',changeFromPrevious:'직전 변경 전 수치와의 차이',
+  actualTotal:'실제 능력치 합계',calculationDetails:'계산 내역',resultValue:'결과',otherStats:'그 외',beforeLevel:'레벨 보정 전',
+  neutralNature:'성격 보정 없음 (×1.00)',battleEffectsExcluded:'전투 중 특성 효과는 미반영',wonderGuardHP:'불가사의부적 적용: HP = 1',baseHPException:'기본 HP가 1인 포켓몬: HP = 1',
+  statFormula:'EV/4, 레벨 보정, 성격 보정을 순서대로 내립니다. HP는 레벨+10, 그 외 능력치는 +5를 더한 뒤 성격을 적용합니다.',
+  defaultSprite:'인게임 기본',temporaryDefault:'인게임 기본 · temp',alternative:'인게임 대체 · 선택 가능',unknownStatus:'인게임 선택 가능 · DB 상태 미상',notApplied:'인게임 미적용 스프라이트',
+  notAppliedHint:'현재 공식 스프라이트 목록에 없습니다. 수동 설치와는 별개입니다.',spriteSelectionHint:'main을 기본으로 사용하고, main이 없으면 temp를 사용합니다. 목록에 있는 대체 이미지는 게임 도감에서 선택할 수 있습니다.',
+  otherNote:'기본 자동 선택에서 제외된 대체 이미지와 공식 목록 미등록 이미지입니다. alt와 일부 temp도 게임 도감에서 선택할 수 있습니다. ‘인게임 미적용’은 현재 공식 목록에 없는 경우에만 표시합니다.'
+});
+Object.assign(en,{
+  randomHead:'Random head',randomBody:'Random body',compare:'Compare with last change',changeFromPrevious:'Difference from before the last change',
+  actualTotal:'Actual stat total',calculationDetails:'Calculation details',resultValue:'Result',otherStats:'Others',beforeLevel:'Before level scaling',
+  neutralNature:'No nature modifier (×1.00)',battleEffectsExcluded:'In-battle ability effects excluded',wonderGuardHP:'Wonder Guard: HP = 1',baseHPException:'Base HP of 1: HP = 1',
+  statFormula:'Floor EV/4, level scaling, then nature scaling. HP adds level+10; other stats add 5 before applying nature.',
+  defaultSprite:'In-game default',temporaryDefault:'In-game default · temp',alternative:'In-game selectable alternative',unknownStatus:'Selectable · unknown DB status',notApplied:'Not applied in game',
+  notAppliedHint:'Absent from the current official sprite inventory. Manual installation is separate.',spriteSelectionHint:'Main is the default; temp is used when no main exists. Listed alternatives can be selected in the game Pokédex.',
+  otherNote:'Alternatives outside default selection and sprites absent from the official inventory. Alt and some temp sprites are selectable in the game Pokédex. “Not applied in game” only marks absence from the current official inventory.'
+});
+Object.assign(ja,{
+  randomHead:'頭をランダムに選択',randomBody:'体をランダムに選択',compare:'直前の変更と比較',changeFromPrevious:'直前の変更前の値との差',
+  actualTotal:'実際の能力値の合計',calculationDetails:'計算の内訳',resultValue:'結果',otherStats:'その他',beforeLevel:'レベル補正前',
+  neutralNature:'性格補正なし (×1.00)',battleEffectsExcluded:'戦闘中の特性効果は含めません',wonderGuardHP:'ふしぎなまもり: HP = 1',baseHPException:'基本HPが1: HP = 1',
+  statFormula:'EV/4・レベル補正・性格補正の順に切り捨てます。HPはレベル+10、他の能力は+5の後に性格を適用します。',
+  defaultSprite:'ゲーム内の標準',temporaryDefault:'ゲーム内の標準 · temp',alternative:'ゲーム内で選択可能な代替',unknownStatus:'選択可能 · DB状態は不明',notApplied:'ゲーム内未適用スプライト',
+  notAppliedHint:'現在の公式スプライト一覧にありません。手動インストールとは別の扱いです。',spriteSelectionHint:'mainを標準とし、mainがなければtempを使用します。一覧内の代替画像はゲームの図鑑で選択できます。',
+  otherNote:'標準の自動選択から外れる代替画像と公式一覧にない画像です。altや一部のtempもゲームの図鑑で選択できます。「ゲーム内未適用」は現在の公式一覧にない場合だけ表示します。'
+});
+Object.assign(ko,{baseStatFormula:'머리와 몸통의 기여분을 각각 버린 뒤 더합니다. 합계는 최소 1입니다.'});
+Object.assign(en,{baseStatFormula:'Floor each parent contribution separately, then add them. The minimum base stat is 1.'});
+Object.assign(ja,{baseStatFormula:'頭と体の寄与分をそれぞれ切り捨てて加算します。種族値の最小値は1です。'});
 export const translations={ko,en,ja};

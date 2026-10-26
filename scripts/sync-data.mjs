@@ -17,6 +17,7 @@ const definitions={
   abilities:poke+'abilities.csv',abilityNames:poke+'ability_names.csv',
   split:'https://raw.githubusercontent.com/infinitefusion/scripts/main/052_InfiniteFusion/Fusion/Data/SplitNames.rb',
   credits:spriteRepo+'Data/sprites/Sprite%20Credits.csv',
+  customSpriteInventory:spriteRepo+'Data/sprites/CUSTOM_SPRITES',
   sheetFiles:'https://api.github.com/repos/infinitefusion/infinitefusion-hoenn-public/git/trees/main?recursive=1',
 };
 const sources=[];
@@ -56,12 +57,14 @@ const sheetTree=JSON.parse(raw.sheetFiles);if(sheetTree.truncated||!Array.isArra
 const sheetFiles=new Set(sheetTree.tree.map(f=>f.path));
 const customSheets={};
 for(const file of sheetFiles){const m=file.match(/^Graphics\/CustomBattlers\/spritesheets\/spritesheets_custom\/(\d+)\/\d+([a-z]*)\.png$/);if(m)(customSheets[m[1]]??=[]).push(m[2]);}
+const listedSprites=new Set(raw.customSpriteInventory.split(/\r?\n/).map(name=>name.trim().replace(/\.png$/i,'')));
 const byHead=new Map(), tags=new Map();let variantCount=0,unavailableVariantCount=0;
 // Official credits have no header. Use the CSV reader by prepending the documented columns.
 for(const r of parseCSV('sprite,artist,status,tags\n'+raw.credits)){
   const m=r.sprite.match(/^(\d+)\.(\d+)([a-z]*)$/);if(!m||!seen.has(+m[1])||!seen.has(+m[2]))continue;
   if(!sheetFiles.has(`Graphics/CustomBattlers/spritesheets/spritesheets_custom/${+m[1]}/${+m[1]}${m[3]}.png`)){unavailableVariantCount++;continue;}
   const entry={id:r.sprite,body:+m[2],alt:m[3],artist:r.artist,status:r.status,tags:r.tags.split(';').filter(Boolean)};
+  if(!listedSprites.has(r.sprite))entry.listed=false;
   if(!byHead.has(+m[1]))byHead.set(+m[1],[]);byHead.get(+m[1]).push(entry);variantCount++;
   for(const tag of entry.tags)tags.set(tag,(tags.get(tag)||0)+1);
 }
@@ -70,8 +73,8 @@ for(const [head,entries]of byHead)await writeFile(new URL(`sprites/${head}.json`
 const metadata={retrievedAt:new Date().toISOString(),gameDatabase:'infinitefusion/infinitefusion-e18',speciesCount:pokemon.length,variantCount,unavailableVariantCount,customSheets,sources,spriteBase:spriteRepo,formulaSource:'https://github.com/infinitefusion/scripts/blob/main/052_InfiniteFusion/Fusion/Data/FusedSpecies.rb',tags:[...tags].sort((a,b)=>b[1]-a[1]).map(([key,count])=>({key,count})),heads:[...byHead].map(([id,entries])=>({id,count:entries.length}))};
 const artists=[...new Set([...byHead.values()].flat().map(s=>s.artist))],tagKeys=[...tags.keys()];
 const artistIds=new Map(artists.map((a,i)=>[a,i])),tagIds=new Map(tagKeys.map((a,i)=>[a,i]));
-const rows=[...byHead].flatMap(([head,entries])=>entries.map(s=>[head,s.body,s.alt,artistIds.get(s.artist),s.tags.map(t=>tagIds.get(t)),s.status]));
-Object.assign(metadata,deriveSpriteInventory({tags:tagKeys,rows}));
+const rows=[...byHead].flatMap(([head,entries])=>entries.map(s=>[head,s.body,s.alt,artistIds.get(s.artist),s.tags.map(t=>tagIds.get(t)),s.status,...(s.listed===false?[false]:[])]));
+Object.assign(metadata,deriveSpriteInventory({tags:tagKeys,rows}),{unlistedVariantCount:rows.filter(r=>r[6]===false).length,inventoryCheckedAt:new Date().toISOString()});
 await writeFile(new URL('search-index.json',ROOT),JSON.stringify({artists,tags:tagKeys,rows}));
 const catalog={metadata,pokemon,types,stats,natures,abilities};
 await writeFile(new URL('catalog.json',ROOT),JSON.stringify(catalog));

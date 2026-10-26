@@ -14,7 +14,7 @@ function enhance(select,lang){
   const all=[...select.options].map(o=>({value:o.value,label:o.text,disabled:o.disabled}));
   const widget=document.createElement('div');widget.className='combobox';widget.dataset.for=select.id;
   const input=document.createElement(languageOnly?'button':'input');input.id=`${select.id}-input`;input.className=languageOnly?'combo-input combo-display':'combo-input';input.type=languageOnly?'button':'text';input.autocomplete='off';input.spellcheck=false;input.setAttribute('role','combobox');if(!languageOnly)input.setAttribute('aria-autocomplete','list');input.setAttribute('aria-expanded','false');input.setAttribute('aria-haspopup','listbox');if(numeric)input.inputMode='numeric';
-  const label=select.closest('label')?.cloneNode(true);label?.querySelectorAll('select').forEach(el=>el.remove());
+  const label=select.closest('label')?.cloneNode(true);label?.querySelectorAll('select,.field-hint').forEach(el=>el.remove());
   input.setAttribute('aria-label',select.getAttribute('aria-label')||label?.textContent.trim()||select.id);
   const display=languageOnly?input:document.createElement('button');
   if(!languageOnly){display.type='button';display.className='combo-input combo-display';display.hidden=true;display.setAttribute('role','combobox');display.setAttribute('aria-label',input.getAttribute('aria-label'));display.setAttribute('aria-haspopup','listbox');display.setAttribute('aria-expanded','false');}
