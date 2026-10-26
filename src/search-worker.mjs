@@ -2,14 +2,17 @@ import {makeFusion} from './fusion.mjs';
 import {compileQuery} from './query.mjs';
 import {assetURL} from './paths.mjs';
 import {createNameMatcher,createSimpleSearch} from './name-search.mjs';
-import {eligibleVariants} from './dex-data.mjs';
+import {eligibleVariants,defaultVariants} from './dex-data.mjs';
 let data,indexPromise,groups;
 async function loadIndex(){
   if(groups)return groups;
   if(!indexPromise)indexPromise=fetch(assetURL('data/search-index.json')).then(r=>{if(!r.ok)throw Error(`HTTP ${r.status}`);return r.json();}).then(index=>{
     const grouped=new Map();
     for(const [head,body,alt,artist,tags,status,listed]of index.rows){const key=head*1000+body;if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push({id:`${head}.${body}${alt}`,alt,artist:index.artists[artist],tags:tags.map(i=>index.tags[i]),status,listed:listed!==false});}
-    for(const variants of grouped.values())variants.sort((a,b)=>(a.alt!==''&&a.status!=='main')-(b.alt!==''&&b.status!=='main')||a.alt.length-b.alt.length||a.alt.localeCompare(b.alt));
+    for(const variants of grouped.values()){
+      const defaults=new Set(defaultVariants(variants));
+      variants.sort((a,b)=>Number(defaults.has(b))-Number(defaults.has(a))||a.alt.length-b.alt.length||a.alt.localeCompare(b.alt));
+    }
     groups=grouped;return grouped;
   }).catch(e=>{indexPromise=null;throw e;});
   return indexPromise;
@@ -23,13 +26,12 @@ self.onmessage=async({data:message})=>{
     const filter=advanced?compileQuery(query,{types:typeAliases,tags:data.metadata.tags.map(t=>t.key),nameMatcher}).test:createSimpleSearch(query,nameMatcher);
     const spriteGroups=await loadIndex();const matches=[];
     for(const head of data.pokemon)for(const body of data.pokemon){
-      const variants=eligibleVariants(spriteGroups.get(head.id*1000+body.id),scope);
+      const variants=eligibleVariants(spriteGroups.get(head.id*1000+body.id),scope,tag);
       if((customOnly||tag||scope==='other')&&!variants.length)continue;
       const f=makeFusion(head,body);
       if(type&&!f.types.includes(type))continue;
       let chosen;
       for(const variant of variants.length?variants:[{}]){
-        if(tag&&!variant.tags?.includes(tag))continue;
         const r={...f,custom:Boolean(variant.id),tags:variant.tags||[],artist:variant.artist||''};
         if(filter(r)){chosen={head:head.id,body:body.id,variant,bst:f.bst,name:lang==='en'?f.name:`${head.names[lang]} × ${body.names[lang]}`};break;}
       }

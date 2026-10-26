@@ -52,13 +52,15 @@ The interface keeps controls and cards compact on small screens. The Pokémon pi
 - **Nature:** 25 choices, with stat modifiers shown.
 - **EVs:** Presets or direct allocation, with a maximum of 252 per stat and 510 in total. Presets allocate up to 508.
 - **Ability:** Choose an inherited basic ability, including the game's HP rule for Wonder Guard.
-- **Comparison:** Show deltas against the last applied stat change. Current nature effects are shown separately, and Calculation details exposes each rounding stage.
+- **Comparison:** Deltas appear only for actual stats. Changing nature shows its current effect versus neutral nature with all other settings unchanged; numeric edits compare against the start of that edit. An explicitly pinned comparison is labeled separately. Changing either Pokémon clears previous and pinned comparisons. Multi-digit input is one edit.
 
 Each stat control shows its calculation effect. The actual-stat total is distinguished from BST, and the expandable breakdown shows EV truncation, level scaling, nature percentages, and special HP rules.
 
 Level and IV fields accept direct numeric input. Other dropdowns support text filtering; their arrow buttons open a selection-only menu. The language dropdown is selection-only.
 
-Bookmarks use `localStorage`. They stay in that browser and site origin; they are not synced between devices. Clearing site data removes them.
+Bookmarks and the last viewed fusion use `localStorage`. They stay in that browser and site origin; they are not synced between devices. With no valid saved view or denied storage, a fresh visit shows a random fusion. Explicit shared links take priority. Clearing site data removes saved data.
+
+Calculation rules remain visible above sprite variants. GitHub and bug report / feedback links are available in the footer.
 
 ## Search
 
@@ -148,7 +150,7 @@ Root domains and project subpaths such as `https://username.github.io/Pokemon-Fu
 
 ### Dex scope
 
-The game dex follows the original default-selection rule: listed `main` sprites first, or listed `temp` sprites when that pair has no main. **Other tags** contains alternatives and images absent from the current official sprite inventory. Listed alternatives, including `alt`, are selectable in the game Pokédex; they are not unused. Only images absent from the official inventory receive a **Not applied in game** label (manual installation is separate). A `reference` tag alone does not exclude a sprite from the game dex. Total fusion counts represent unique head × body combinations.
+The dex is split into **Game dex** and **In-game unverified**, based on the current official sprite inventory. Listed sprites include defaults and selectable alternatives, regardless of `main`, `alt`, or `temp` status. Images absent from that inventory appear only in the unverified group and its tag counts; this does not establish that they are unused. Availability can vary by installed game version; manual installation is separate. Automatic sprite selection still prefers listed `main`, falling back to listed `temp` when no main exists. Total fusion counts represent unique head × body combinations.
 
 ### Fusion stats
 
